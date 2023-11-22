@@ -1,5 +1,3 @@
-The error you're encountering indicates that the `User` table has not been created in your SQLite database. To resolve this, you need to run a database migration or create the tables directly. Here's how you can do it:
-
 ### Option 1: Using Flask-Migrate for Database Migrations
 
 Flask-Migrate is an extension that handles SQLAlchemy database migrations for Flask applications using Alembic. It's a preferable way to handle database schema changes in a Flask application.
@@ -57,6 +55,4 @@ If you prefer not to use Flask-Migrate, you can create the tables manually.
    Make sure you do this only once or when you are sure that you need to recreate the tables, as it could lead to data loss in a production environment.
 
 ### Note:
-- If you are planning to update your database schema in the future, using Flask-Migrate is a more sustainable approach.
-- Ensure that your database URI is correctly set in the `.env` file and that the database exists.
-- After applying these changes, try running your application and the register API endpoint again. This should resolve the `no such table: user` error.
+- We have opted for option 1
