@@ -1,7 +1,7 @@
 from app import app, db
 from flask import jsonify, request
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from app.models import User
+from app.models import User, Todo
 from datetime import timedelta
 
 @app.route('/register', methods=['POST'])
@@ -35,8 +35,16 @@ def login():
 
     return jsonify({"msg": "Invalid username or password"}), 401
 
-@app.route('/protected', methods=['GET'])
+@app.route('/todo', methods=['POST'])
 @jwt_required()
-def protected():
+def add_todo():
     current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+    user = User.query.filter_by(username=current_user).first()
+    title = request.json.get('title', '')
+    description = request.json.get('description', '')
+    if not title:
+        return jsonify({"msg": "Missing title"}), 400
+    todo = Todo(title=title, description=description, user_id=user.id)
+    db.session.add(todo)
+    db.session.commit()
+    return jsonify({"msg": "Todo created successfully", "todo": todo.id}), 201
